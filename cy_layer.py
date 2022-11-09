@@ -22,8 +22,10 @@ def cy_conv2d(matrix: Union[List[List[float]], np.ndarray],
               dilation: Tuple[int, int] = (1, 1),
               padding: Tuple[int, int] = (0, 0)) -> np.ndarray:
     k = kernel.shape
-    matrix = matrix if list(padding) == [0, 0] else cy_padding(matrix, padding)
     n, m = matrix.shape
+
+    matrix = matrix if list(padding) == [0, 0] else cy_padding(matrix, padding)
+
     h_out = np.floor((n + 2 * padding[0] - k[0] - (k[0] - 1) * (dilation[0] - 1)) / stride[0]).astype(int) + 1
     w_out = np.floor((m + 2 * padding[1] - k[1] - (k[1] - 1) * (dilation[1] - 1)) / stride[1]).astype(int) + 1
     matrix_conv = np.zeros((h_out, w_out))
