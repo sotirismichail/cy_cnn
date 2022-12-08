@@ -1,20 +1,5 @@
 import numpy as np
 
-'''
-  polar_cart
-
-  Arguments:
-    Arg1: radius -> azimuth radius
-    Arg2: kernel_size -> int (default: 3), output channels of the convolution
-
-  Returns:
-    kernel_list -> list of kernels to be used for convolution
-
-  Description: Creates 'number' of kernels, of size kernel_size x kernel_size x kernel_size
-               from normally distributed random numbers. Each kernel is normalized to have
-               values between 0 and 1, as needed for convolution.
-'''
-
 
 def _lpcoords(ishape, w, angles=None):
     ishape = np.array(ishape)
@@ -41,21 +26,20 @@ def _lpcoords(ishape, w, angles=None):
   polar_cart
 
   Arguments:
-    Arg1: radius -> azimuth radius
-    Arg2: kernel_size -> int (default: 3), output channels of the convolution
+    Arg1: r -> radial distance to origin
+    Arg2: theta -> azimuthal angle (with respect to polar axis)
+    Arg3: centre -> polar axis centre
 
   Returns:
     kernel_list -> list of kernels to be used for convolution
 
-  Description: Creates 'number' of kernels, of size kernel_size x kernel_size x kernel_size
-               from normally distributed random numbers. Each kernel is normalized to have
-               values between 0 and 1, as needed for convolution.
+  Description: Calculating the reverse polar angle, used for the logpolar transform
 '''
 
 
-def polar_cart(radius, theta, centre):
-    x = radius * np.cos(theta) + centre[0]
-    y = radius * np.sin(theta) + centre[1]
+def polar_cart(r, theta, centre):
+    x = r * np.cos(theta) + centre[0]
+    y = r * np.sin(theta) + centre[1]
 
     return x, y
 

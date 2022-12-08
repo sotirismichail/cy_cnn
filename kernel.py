@@ -1,22 +1,21 @@
 import numpy as np
-'''
-  kernel.generate()
-  
-  Arguments:
-    Arg1: out_channels -> int (default: 5), output channels of the convolution
-    Arg2: kernel_size -> int (default: 3), output channels of the convolution
-
-  Returns:
-    kernel_list -> list of kernels to be used for convolution
-
-  Description: Creates 'number' of kernels, of size kernel_size x kernel_size x kernel_size
-               from normally distributed random numbers. Each kernel is normalized to have
-               values between 0 and 1, as needed for convolution.
-'''
 
 
 def generate(out_channels: int = 3,
              kernel_size: int = 3):
+    '''
+
+      Input:
+        out_channels: int (default: 5), output channels of the convolution
+        kernel_size: int (default: 3), output channels of the convolution
+
+      Returns:
+        kernel_list: Convolution kernels
+
+      Description: Creates 'number' of kernels, of size kernel_size x kernel_size x kernel_size
+                   from normally distributed random numbers. Each kernel is normalized to have
+                   values between 0 and 1, as needed for convolution.
+    '''
     kernel_list = []
 
     for k in range(out_channels):
@@ -27,27 +26,23 @@ def generate(out_channels: int = 3,
     return kernel_list
 
 
-'''
-  kernel.bias()
-
-  Arguments:
-    Arg1: in_channels -> int (default: 3), input channels of the convolution, usually 3 for RGB
-    Arg2: out_channels -> int (default: 3), output channels of the convolution
-    Arg3: kernel_size -> int (default: 3), dimensions of convolution kernel
-    Arg4: groups -> int (default: 1), convolution channels to be disconnected from the input to the output
-
-  Returns:
-    bias_array -> np.ndarray, biases calculated for each kernel
-
-  Description: The learnable bias of the module of shape (out_channels). The values of these
-               weights are sampled from U(-sqrt(k), sqrt(k)), where k = groups/in_channels*kernel_size^3
-'''
-
-
 def bias(in_channels: int = 3,
          out_channels: int = 5,
          kernel_size: int = 3,
          groups: int = 1) -> np.ndarray:
+    '''
+      Input:
+        in_channels: int (default: 3), input channels of the convolution, usually 3 for RGB
+        out_channels: int (default: 3), output channels of the convolution
+        kernel_size: int (default: 3), dimensions of convolution kernel
+        groups: int (default: 1), convolution channels to be disconnected from the input to the output
+
+      Returns:
+        bias_array: np.ndarray, biases calculated for each kernel
+
+      Description: The learnable bias of the module of shape (out_channels). The values of these
+                   weights are sampled from U(-sqrt(k), sqrt(k)), where k = groups/in_channels*kernel_size^3
+    '''
 
     bias_array = np.zeros(out_channels)
     kappa = groups/(in_channels*(kernel_size**kernel_size))
@@ -56,29 +51,24 @@ def bias(in_channels: int = 3,
     return bias_array
 
 
-'''
-  kernel.weights()
-
-  Arguments:
-    Arg1: in_channels -> int (default: 3), input channels of the convolution, usually 3 for RGB
-    Arg2: out_channels -> int (default: 3), output channels of the convolution
-    Arg3: kernel_size -> int (default: 3), dimensions of convolution kernel
-    Arg4: groups -> int (default: 1), convolution channels to be disconnected from the input to the output
-
-  Returns:
-    weight_array -> np.ndarray, weights calculated for each kernel
-
-  Description: Calculating the learnable weights of the module of shape (out_channels, in_channels/groups, kernel_size, 
-               kernel_size). The values of these weights are sampled from U(-sqrt(k), sqrt(k)), where 
-               k = groups/in_channels*kernel_size^3
-'''
-
-
 def weights(in_channels: int = 3,
             out_channels: int = 5,
             kernel_size: int = 3,
             groups: int = 1) -> np.ndarray:
+    '''
+      Input:
+        in_channels: int (default: 3), input channels of the convolution, usually 3 for RGB
+        out_channels: int (default: 3), output channels of the convolution
+        kernel_size: int (default: 3), dimensions of convolution kernel
+        groups: int (default: 1), convolution channels to be disconnected from the input to the output
 
+      Returns:
+        weight_array: np.ndarray, weights calculated for each kernel
+
+      Description: Calculating the learnable weights of the module of shape (out_channels, in_channels/groups, kernel_size,
+                   kernel_size). The values of these weights are sampled from U(-sqrt(k), sqrt(k)), where
+                   k = groups/in_channels*kernel_size^3
+    '''
     weight_array = np.zeros((out_channels, in_channels, kernel_size, kernel_size))
     kappa = groups/(in_channels*(kernel_size**kernel_size))
     weight_array = np.around(np.random.uniform(-np.sqrt(kappa), np.sqrt(kappa),

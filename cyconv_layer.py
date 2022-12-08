@@ -1,8 +1,7 @@
-import math
 import cyconv
 
 
-class cyconv2d_function:
+class cyconv_layer:
     @staticmethod
     def forward(ctx,
                 matrix,
@@ -18,10 +17,10 @@ class cyconv2d_function:
         ctx.padding = padding
         ctx.dilation = dilation
 
-        output = cyconv2d.forward(matrix, weight, workspace, stride, padding, dilation)
+        output = cyconv.forward(matrix, weight, workspace, stride, padding, dilation)
 
         return output
 
     @staticmethod
     def backward(ctx, grad_output):
-        grad_input, grad_weight = cyconv2d.backward(ctx.matrix, )
+        grad_input, grad_weight = cyconv.backward()
