@@ -1,5 +1,20 @@
 import numpy as np
 
+'''
+  polar_cart
+
+  Arguments:
+    Arg1: radius -> azimuth radius
+    Arg2: kernel_size -> int (default: 3), output channels of the convolution
+
+  Returns:
+    kernel_list -> list of kernels to be used for convolution
+
+  Description: Creates 'number' of kernels, of size kernel_size x kernel_size x kernel_size
+               from normally distributed random numbers. Each kernel is normalized to have
+               values between 0 and 1, as needed for convolution.
+'''
+
 
 def _lpcoords(ishape, w, angles=None):
     ishape = np.array(ishape)
