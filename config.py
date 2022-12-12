@@ -1,7 +1,7 @@
 import numpy as _np
 """
     config.py
-    
+
     Configuration file, defining program-running utilities and data types that are used throughout the program. Any
     changes to data types or formats should be made here and not hard-coded in other project files.
 """

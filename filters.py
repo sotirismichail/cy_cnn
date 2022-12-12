@@ -15,9 +15,10 @@ def coord_map(dim: int,
         mode: 'W' for 'warp' or 'm' for mirror bilinear interpolation mode
 
     Returns:
-        coord: ftype (float64, see config), coordinate value, depending on the mode of the bilinear interpolation
+        coord: int, coordinate value, depending on the mode of the bilinear interpolation
     """
-    # 12/12/2022 todo: coord seems to be a matrix
+    coord = np.floor(coord).astype(int)
+    dim = np.floor(dim).astype(int)
     if mode == 'M':
         if coord < 0:
             coord = np.fmod(-coord, dim)
@@ -69,26 +70,26 @@ def interp_bilinear(img_channel: np.ndarray,
 
     for tfr in range(tf_rows):
         for tfc in range(tf_columns):
-            r = tf_coords_r[tfr*tf_columns + tfc]
-            c = tf_coords_c[tfr*tf_columns + tfc]
+            r = tf_coords_r[tfr, tfc]
+            c = tf_coords_c[tfr, tfc]
 
             if ((mode == 'C') and ((r < 0) or (r >= rows) or
                                    (c < 0) or (c >= columns))):
-                output[tfr * tf_columns + tfc] = cval
+                output[tfr, tfc] = cval
             else:
                 r = coord_map(rows, r, mode)
                 c = coord_map(columns, c, mode)
 
-                r_int = np.floor(r)
-                c_int = np.floor(c)
+                r_int = np.floor(r).astype(int)
+                c_int = np.floor(c).astype(int)
 
                 t = r - r_int
                 u = c - c_int
 
-                y0 = img_channel[int(r_int * columns + c_int)]
-                y1 = img_channel[int(coord_map(rows, r_int + 1, mode) * columns + c_int)]
-                y2 = img_channel[int(coord_map(rows, r_int + 1, mode) * columns + coord_map(columns, c_int + 1, mode))]
-                y3 = img_channel[int(r_int * columns + coord_map(columns, c_int + 1, mode))]
+                y0 = img_channel[r_int, c_int]
+                y1 = img_channel[coord_map(rows, r_int + 1, mode), c_int]
+                y2 = img_channel[coord_map(rows, r_int + 1, mode), coord_map(columns, c_int + 1, mode)]
+                y3 = img_channel[r_int, coord_map(columns, c_int + 1, mode)]
 
                 output[tfr * tf_columns + tfc] = \
                     (1 - t) * (1 - u) * y0 + t * (1 - u) * y1 + t * u * y2 + (1 - t) * u * y3
