@@ -1,5 +1,6 @@
 import cyconv
 
+# todo: implement backward and forward propagation convolution code
 
 class cyconv_layer:
     @staticmethod

@@ -4,22 +4,25 @@ from typing import List, Tuple, Union
 import kernel
 
 
-def cypad(matrix: np.ndarray, padding: Tuple[int, int]) -> np.ndarray:
-    n, m = matrix.shape
-    r, c = padding
-    '''
-      Input:
+def cypad(matrix: np.ndarray,
+          padding: Tuple[int, int]) -> np.ndarray:
+    """
+    Description:
+        To achieve cylindrical convolution, instead of padding the matrix with zeroes at the top and
+        bottom boundaries of elements of the first row (row 0) are copied to the padding boundary at
+        the bottom and the elements of the last row (row 7) are copied to the boundary at the top of
+        padded matrix. Left and right padding remain the same, padded with zeroes.
+
+    Parameters:
         matrix: np.ndarray, convolution layer matrix
         padding: int (default: 1, 1), output channels of the convolution
 
-      Returns:
+    Returns:
         matrix_padded: matrix padded cylindrically
+    """
+    n, m = matrix.shape
+    r, c = padding
 
-      Description: To achieve cylindrical convolution, instead of padding the matrix with zeroes at the top and 
-                    bottom boundaries of elements of the first row (row 0) are copied to the padding boundary at 
-                    the bottom and the elements of the last row (row 7) are copied to the boundary at the top of 
-                    padded matrix. Left and right padding remain the same, padded with zeroes.
-    '''
     matrix_padded = np.zeros((n + r * 2, m + c * 2))
     matrix_padded[r:n + r, c:m + c] = matrix
     for i in range(r):
@@ -39,11 +42,14 @@ def cyconv2d(in_matrix: np.ndarray,
              dilation: int = 1,
              groups: int = 1,
              bias: bool = True) -> np.ndarray:
-    '''
-      cyconv.cyconv2d()
+    """
+    Description:
+        Applies a 2D convolution over the input matrix composed of several input planes. A cylindrical
+        padding is applied for the input data, so the convolution is implementing a cylindrical sliding
+        window algorithm.
 
-      Arguments:
-        matrix: np.ndarray, image data as a numpy matrix, 4 dimensions, (1, channels, width, height)
+    Parameters:
+        in_matrix: np.ndarray, image data as a numpy matrix, 4 dimensions, (1, channels, width, height)
         in_channels: int (default: 3), input channels of the convolution, usually 3 for RGB
         out_channels: int (default: 3), output channels of the convolution
         kernel_size: int (default: 3), dimensions of convolution kernel
@@ -54,13 +60,9 @@ def cyconv2d(in_matrix: np.ndarray,
         groups: int (default: 1), connections to be blocked from the input to the output channels
         bias: bool (default: True), adds a learnable bias to the output
 
-      Returns:
+    Returns:
         result: np.ndarray, result of the convolution
-
-      Description: Applies a 2D convolution over the input matrix composed of several input planes. A cylindrical
-                   padding is applied for the input data, so the convolution is implementing a cylindrical sliding
-                   window algorithm.
-    '''
+    """
     in_height, in_width, channels = in_matrix.shape
     matrix = np.zeros((in_height + 2 * padding, in_width + 2 * padding, channels))
     if padding_mode == 'cylindrical':
@@ -103,14 +105,15 @@ def cyconv2d(in_matrix: np.ndarray,
 
 
 def sigmoid(matrix: np.ndarray):
-    '''
-      Arguments:
+    """
+    Description:
+        Used as an activation function for CNN applications
+
+    Parameters:
         matrix: np.ndarray, convolution layer matrix
 
-      Returns:
+    Returns:
         z: function output
-
-      Description: Used as an activation function for CNN applications
-    '''
+    """
     z = 1/(1 + np.exp(-matrix))
     return z
