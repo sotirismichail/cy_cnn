@@ -91,7 +91,7 @@ def interp_bilinear(img_channel: np.ndarray,
                 y2 = img_channel[coord_map(rows, r_int + 1, mode), coord_map(columns, c_int + 1, mode)]
                 y3 = img_channel[r_int, coord_map(columns, c_int + 1, mode)]
 
-                output[tfr * tf_columns + tfc] = \
+                output[tfr, tfc] = \
                     (1 - t) * (1 - u) * y0 + t * (1 - u) * y1 + t * u * y2 + (1 - t) * u * y3
 
     return output
