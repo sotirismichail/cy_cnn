@@ -3,7 +3,7 @@ import config
 
 
 def coord_map(dim: int,
-              coord: config.ftype,
+              coord: int,
               mode: str):
     """
     Description:
