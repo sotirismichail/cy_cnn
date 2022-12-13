@@ -1,9 +1,13 @@
+from typing import Tuple, Any, Union, Optional
+
 import numpy as np
 import config
 from filters import interp_bilinear
 
 
-def _lpcoords(ishape, angles_eval, angles=None):
+def _lpcoords(ishape: np.ndarray,
+              angles_eval: np.ndarray,
+              angles: int = None) -> tuple[Any, Any, Union[int, Any], Any]:
     """
     Description:
         Calculate the reverse coordinates for the log-polar transform.
@@ -35,8 +39,15 @@ def _lpcoords(ishape, angles_eval, angles=None):
     return r*np.sin(theta) + centre[0], r*np.cos(theta) + centre[1], angles, log_base
 
   
-def logpolar(image, angles=None, angles_eval=None, mode='M', cval=0, output=None,
-             _coords_r=None, _coords_c=None, verbose=False):
+def logpolar(image: np.ndarray,
+             output: np.ndarray,
+             angles: int = None,
+             angles_eval: np.ndarray = None,
+             mode: str ='M',
+             cval: int = 0,
+             _coords_r = None,
+             _coords_c = None,
+             verbose: bool = False) -> Union[tuple[Any, Union[int, Any], Any], Any]:
     """
     Description:
         Transforms an image from a cartesian (x, y) representation, to a polar representation (r, φ, θ),

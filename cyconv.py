@@ -73,7 +73,6 @@ def cyconv2d(in_matrix: np.ndarray,
     matrix = np.expand_dims(matrix, axis=0)
     matrix = matrix / 255.0
 
-    # kernels = kernel.generate(out_channels, kernel_size)
     weights = kernel.weights(in_channels, out_channels, kernel_size, groups)
     biases = kernel.bias(in_channels, out_channels, kernel_size, groups)
 
@@ -102,18 +101,3 @@ def cyconv2d(in_matrix: np.ndarray,
                     result[0, out_channel_iter, out_width_iter, out_height_iter] = total
 
     return result
-
-
-def sigmoid(matrix: np.ndarray):
-    """
-    Description:
-        Used as an activation function for CNN applications
-
-    Parameters:
-        matrix: np.ndarray, convolution layer matrix
-
-    Returns:
-        z: function output
-    """
-    z = 1/(1 + np.exp(-matrix))
-    return z

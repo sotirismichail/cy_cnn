@@ -4,7 +4,7 @@ import config
 
 def coord_map(dim: int,
               coord: int,
-              mode: str):
+              mode: str) -> int:
     """
     Description:
         Handles the mirror and warp modes of the image interpolation.

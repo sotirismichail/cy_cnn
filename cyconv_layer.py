@@ -1,27 +1,29 @@
-import cyconv
+import numpy as np
+import config, cyconv
 
-# todo: implement backward and forward propagation convolution code
+# 13/12/2022: todo: implement backward and forward propagation, for the planned accelerator
+# 13/12/2022: todo: update skeleton to facilitate re-using the existing convolution code
 
-class cyconv_layer:
-    @staticmethod
-    def forward(ctx,
-                matrix,
-                weight,
-                workspace,
-                stride: int = 1,
-                padding: int = 0,
-                dilation: int = 1):
-        ctx.matrix = matrix
-        ctx.weight = weight
-        ctx.workspace = workspace
-        ctx.stride = stride
-        ctx.padding = padding
-        ctx.dilation = dilation
 
-        output = cyconv.forward(matrix, weight, workspace, stride, padding, dilation)
+def cyconv2d_forward() -> np.ndarray:
+    return None
 
-        return output
 
-    @staticmethod
-    def backward(ctx, grad_output):
-        grad_input, grad_weight = cyconv.backward()
+def cyconv2d_activation_forward() -> np.ndarray:
+    return None
+
+
+def cyconv2d_model_forward() -> np.ndarray:
+    return None
+
+
+def cyconv2d_backward() -> np.ndarray:
+    return None
+
+
+def cyconv2d_activation_backward() -> np.ndarray:
+    return None
+
+
+def cyconv2d_model_backward() -> np.ndarray:
+    return None
