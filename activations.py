@@ -51,7 +51,7 @@ def relu_leaky(z) -> np.ndarray:
     """
     Description:
         Leaky rectified linear unit function, based on ReLU, but provides a small slope for negative values instead of
-        a flat slope, to overcome the zero-gradient issue of the standard ReLU The slope coefficient is pre-determined.
+        a flat slope, to overcome the zero-gradient issue of the standard ReLU. The slope coefficient is pre-determined.
         It can be adjusted through the config.py file.
 
     Parameters:

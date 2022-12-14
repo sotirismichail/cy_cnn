@@ -1,8 +1,8 @@
-from typing import Tuple, Any, Union, Optional
+from typing import Any, Union
 
 import numpy as np
 import config
-from filters import interp_bilinear
+from filtes.bilinear import interp_bilinear
 
 
 def _lpcoords(ishape: np.ndarray,

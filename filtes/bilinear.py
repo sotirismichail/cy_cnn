@@ -2,9 +2,9 @@ import numpy as np
 import config
 
 
-def coord_map(dim: int,
-              coord: int,
-              mode: str) -> int:
+def _coord_map(dim: int,
+               coord: int,
+               mode: str) -> int:
     """
     Description:
         Handles the mirror and warp modes of the image interpolation.
@@ -77,8 +77,8 @@ def interp_bilinear(img_channel: np.ndarray,
                                    (c < 0) or (c >= columns))):
                 output[tfr, tfc] = cval
             else:
-                r = coord_map(rows, r, mode)
-                c = coord_map(columns, c, mode)
+                r = _coord_map(rows, r, mode)
+                c = _coord_map(columns, c, mode)
 
                 r_int = np.floor(r).astype(int)
                 c_int = np.floor(c).astype(int)
@@ -87,9 +87,9 @@ def interp_bilinear(img_channel: np.ndarray,
                 u = c - c_int
 
                 y0 = img_channel[r_int, c_int]
-                y1 = img_channel[coord_map(rows, r_int + 1, mode), c_int]
-                y2 = img_channel[coord_map(rows, r_int + 1, mode), coord_map(columns, c_int + 1, mode)]
-                y3 = img_channel[r_int, coord_map(columns, c_int + 1, mode)]
+                y1 = img_channel[_coord_map(rows, r_int + 1, mode), c_int]
+                y2 = img_channel[_coord_map(rows, r_int + 1, mode), _coord_map(columns, c_int + 1, mode)]
+                y3 = img_channel[r_int, _coord_map(columns, c_int + 1, mode)]
 
                 output[tfr, tfc] = \
                     (1 - t) * (1 - u) * y0 + t * (1 - u) * y1 + t * u * y2 + (1 - t) * u * y3

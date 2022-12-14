@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Tuple
 
-import kernel
+import learning
 
 
 def cypad(matrix: np.ndarray,

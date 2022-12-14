@@ -45,7 +45,7 @@ def bias(in_channels: int = 3,
         bias_array: np.ndarray, biases calculated for each kernel
     """
 
-    bias_array = np.zeros(out_channels)
+    # bias_array = np.zeros(out_channels)
     kappa = groups/(in_channels*(kernel_size**kernel_size))
     bias_array = np.around(np.random.uniform(-np.sqrt(kappa), np.sqrt(kappa), size=out_channels), decimals=4)
 
@@ -71,7 +71,7 @@ def weights(in_channels: int = 3,
     Returns:
         weight_array: np.ndarray, weights calculated for each kernel
     """
-    weight_array = np.zeros((out_channels, in_channels, kernel_size, kernel_size))
+    # weight_array = np.zeros((out_channels, in_channels, kernel_size, kernel_size))
     kappa = groups/(in_channels*(kernel_size**kernel_size))
     weight_array = np.around(np.random.uniform(-np.sqrt(kappa), np.sqrt(kappa),
                                                size=(out_channels, in_channels, kernel_size, kernel_size)), decimals=4)
