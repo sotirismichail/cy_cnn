@@ -7,7 +7,7 @@ A cylindrical convolution neural network implementation, implemented solely usin
 This project is currently in development, and this readme file will be updated accordingly, along with progress on the project code.
 
 ## Contact
-Sotiris Michail - michailsotiris@outlook.com
+Sotiris Michail - michailsotiris@outlook.com \
 Project link: https://github.com/sotirismichail/cy_cnn
 
 ## References

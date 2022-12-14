@@ -1,8 +1,6 @@
 import numpy as np
 from typing import Tuple
 
-import learning
-
 
 def cypad(matrix: np.ndarray,
           padding: Tuple[int, int]) -> np.ndarray:
