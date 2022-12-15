@@ -2,11 +2,11 @@ from typing import Any, Union
 
 import numpy as np
 import config
-from filtes.bilinear import interp_bilinear
+from filters.bilinear import interp_bilinear
 
 
 def _lpcoords(ishape: np.ndarray,
-              angles_eval: np.ndarray,
+              angles_eval: np.ndarray = None,
               angles: int = None) -> tuple[Any, Any, Union[int, Any], Any]:
     """
     Description:
@@ -40,13 +40,10 @@ def _lpcoords(ishape: np.ndarray,
 
   
 def logpolar(image: np.ndarray,
-             output: np.ndarray,
              angles: int = None,
              angles_eval: np.ndarray = None,
              mode: str ='M',
              cval: int = 0,
-             _coords_r = None,
-             _coords_c = None,
              verbose: bool = False) -> Union[tuple[Any, Union[int, Any], Any], Any]:
     """
     Description:
@@ -69,17 +66,12 @@ def logpolar(image: np.ndarray,
     if angles_eval is None:
         angles_eval = max(image.shape[:2])
 
-    if _coords_r is None or _coords_c is None:
-        _coords_r, _coords_c, angles, log_base = _lpcoords(image.shape, angles_eval, angles)
-
+    coords_r, coords_c, angles, log_base = _lpcoords(image.shape, angles_eval, angles)
     channels = image.shape[2]
-    if output is None:
-        output = np.empty(_coords_r.shape + (channels,), dtype=np.uint8)
-    else:
-        output = np.atleast_3d(np.ascontiguousarray(output))
+    output = np.empty(coords_r.shape + (channels,), dtype=np.uint8)
 
     for channel in range(channels):
-        output[..., channel] = interp_bilinear(image[..., channels], _coords_r, _coords_c, mode=mode, cval=cval,
+        output[..., channel] = interp_bilinear(image[..., channels], coords_r, coords_c, mode=mode, cval=cval,
                                                output=output[..., channel])
 
     output = output.squeeze()

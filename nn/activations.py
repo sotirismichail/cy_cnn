@@ -47,7 +47,7 @@ def relu(z) -> np.ndarray:
     return np.maximum(0, z)
 
 
-def relu_leaky(z) -> np.ndarray:
+def leaky_relu(z) -> np.ndarray:
     """
     Description:
         Leaky rectified linear unit function, based on ReLU, but provides a small slope for negative values instead of

@@ -1,5 +1,5 @@
 import numpy as np
-import config, cyconv
+import config, cyconv2d
 
 # 13/12/2022: todo: implement backward and forward propagation, for the planned accelerator
 # 13/12/2022: todo: update skeleton to facilitate re-using the existing convolution code

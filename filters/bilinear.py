@@ -40,7 +40,7 @@ def _coord_map(dim: int,
 def interp_bilinear(img_channel: np.ndarray,
                     tf_coords_r: np.ndarray = None,
                     tf_coords_c: np.ndarray = None,
-                    mode: str = 'N',
+                    mode: str = 'M',
                     cval: int = 0) -> np.ndarray:
     """
     Description:

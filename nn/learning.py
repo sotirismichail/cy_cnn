@@ -78,4 +78,3 @@ def weights(in_channels: int = 3,
 
     return weight_array
 
-
