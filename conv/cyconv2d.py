@@ -1,6 +1,7 @@
-import numpy as np
-from typing import Tuple
 import nn
+import numpy as np
+
+from typing import Tuple
 
 
 def pad(
@@ -38,7 +39,7 @@ def pad(
         return matrix_padded
 
 
-def cyconv2d(
+def cyConv2D(
     matrix: np.ndarray,
     in_channels: int,
     out_channels: int,
