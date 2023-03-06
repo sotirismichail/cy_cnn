@@ -35,8 +35,8 @@ author, Yerlan Idelbayev.
 import conv
 import layers
 
-# 15/12/2022 TODO: adapt model to use cyconv2d, implement helper classes/functions to
-#                  achieve compatibility with torch libraries
+# TODO: adapt model to use cyconv2d, implement helper classes/functions to
+#       achieve compatibility with torch libraries
 
 __all__ = [
     "ResNet",
