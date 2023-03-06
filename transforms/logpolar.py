@@ -5,9 +5,9 @@ import config
 from filters.bilinear import interp_bilinear
 
 
-def _lpcoords(ishape: np.ndarray,
-              angles_eval: np.ndarray = None,
-              angles: int = None) -> tuple[Any, Any, Union[int, Any], Any]:
+def _lpcoords(
+    ishape: np.ndarray, angles_eval: np.ndarray = None, angles: int = None
+) -> tuple[Any, Any, Union[int, Any], Any]:
     """
     Description:
         Calculate the reverse coordinates for the log-polar transform.
@@ -18,43 +18,51 @@ def _lpcoords(ishape: np.ndarray,
         angles: int, number of samples in the radial direction
 
     Returns:
-        An array of shape (len(angles), angles_eval), containing the coordinates, as well as the angles and the
-        logarithmic base used to calculate them.
+        An array of shape (len(angles), angles_eval), containing the coordinates, as
+        well as the angles and the logarithmic base used to calculate them.
     """
     ishape = np.array(ishape)
-    centre = (ishape[:2]-1)/2.
+    centre = (ishape[:2] - 1) / 2.0
 
-    d = np.hypot(*(ishape[:2]-centre))
-    log_base = np.log(d)/angles_eval
+    d = np.hypot(*(ishape[:2] - centre))
+    log_base = np.log(d) / angles_eval
 
     if angles is None:
-        angles = -np.linspace(0, 2*np.pi, 2*angles_eval+1)[:-1]
+        angles = -np.linspace(0, 2 * np.pi, 2 * angles_eval + 1)[:-1]
     theta = np.empty((len(angles), angles_eval), config.ftype)
     theta.transpose()[:] = angles
     log_e = np.empty_like(theta)
     log_e[:] = np.arange(angles_eval).astype(config.ftype)
 
-    r = np.exp(log_e*log_base)
+    r = np.exp(log_e * log_base)
 
-    return r*np.sin(theta) + centre[0], r*np.cos(theta) + centre[1], angles, log_base
+    return (
+        r * np.sin(theta) + centre[0],
+        r * np.cos(theta) + centre[1],
+        angles,
+        log_base,
+    )
 
-  
-def logpolar(image: np.ndarray,
-             angles: int = None,
-             angles_eval: np.ndarray = None,
-             mode: str ='M',
-             cval: int = 0,
-             verbose: bool = False) -> Union[tuple[Any, Union[int, Any], Any], Any]:
+
+def logpolar(
+    image: np.ndarray,
+    angles: int = None,
+    angles_eval: np.ndarray = None,
+    mode: str = "M",
+    cval: int = 0,
+    verbose: bool = False,
+) -> Union[tuple[Any, Union[int, Any], Any], Any]:
     """
     Description:
-        Transforms an image from a cartesian (x, y) representation, to a polar representation (r, φ, θ),
-        on a logarithmic base.
+        Transforms an image from a cartesian (x, y) representation, to a polar
+        representation (r, φ, θ), on a logarithmic base.
 
     Parameters:
         image: ndarray, HxWxC three-dimensional RGB image
         angles: int, number of samples in the radial direction
         angles_eval: ndarray (float), angles of evaluation
-        mode: string, how values outside the borders are handled, 'C' for constant, 'M' for mirror and 'W' for wrap
+        mode: string, how values outside the borders are handled, 'C' for constant,
+              'M' for mirror and 'W' for wrap
         cval: int/float, constant to fill the outside area with if mode=='C'
         verbose: Set to 'True' to also return the angles and log base to the caller
 
@@ -71,8 +79,14 @@ def logpolar(image: np.ndarray,
     output = np.empty(coords_r.shape + (channels,), dtype=np.uint8)
 
     for channel in range(channels):
-        output[..., channel] = interp_bilinear(image[..., channels], coords_r, coords_c, mode=mode, cval=cval,
-                                               output=output[..., channel])
+        output[..., channel] = interp_bilinear(
+            image[..., channels],
+            coords_r,
+            coords_c,
+            mode=mode,
+            cval=cval,
+            output=output[..., channel],
+        )
 
     output = output.squeeze()
 

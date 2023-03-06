@@ -2,9 +2,7 @@ import numpy as np
 import config
 
 
-def _coord_map(dim: int,
-               coord: int,
-               mode: str) -> int:
+def _coord_map(dim: int, coord: int, mode: str) -> int:
     """
     Description:
         Handles the mirror and warp modes of the image interpolation.
@@ -15,18 +13,18 @@ def _coord_map(dim: int,
         mode: 'W' for 'warp' or 'm' for mirror bilinear interpolation mode
 
     Returns:
-        coord: int, coordinate value, depending on the mode of the bilinear interpolation
+        coord: int, coordinate value, depending on the bilinear interpolation mode
     """
     coord = np.floor(coord).astype(int)
     dim = np.floor(dim).astype(int)
-    if mode == 'M':
+    if mode == "M":
         if coord < 0:
             coord = np.fmod(-coord, dim)
         elif coord == dim:
             coord = dim - 1
         else:
             coord = dim - np.fmod(coord, dim)
-    elif mode == 'W':
+    elif mode == "W":
         if coord < 0:
             coord = dim - np.fmod(-coord, dim)
         elif coord == dim:
@@ -37,22 +35,26 @@ def _coord_map(dim: int,
     return coord
 
 
-def interp_bilinear(img_channel: np.ndarray,
-                    tf_coords_r: np.ndarray = None,
-                    tf_coords_c: np.ndarray = None,
-                    mode: str = 'M',
-                    cval: int = 0) -> np.ndarray:
+def interp_bilinear(
+    img_channel: np.ndarray,
+    tf_coords_r: np.ndarray = None,
+    tf_coords_c: np.ndarray = None,
+    mode: str = "M",
+    cval: int = 0,
+) -> np.ndarray:
     """
     Description:
         Bilinear interpolation filter, with three modes of interpolation:
-        'C', constant, with the constant being 'cval', set by the input, 'W', warp, and 'M', mirror
+        'C', constant, with the constant being 'cval', set by the input,
+        'W'=warp, 'M'=mirror
 
     Parameters:
         img_channel: One channel of the input image
         output: the result of the interpolation
         tf_coords_r: row transform coordinates
         tf_coords_c: column transform coordinates
-        mode: interpolation mode, 'C' sets the values equal to 'cval', 'W' warps and 'M' mirrors
+        mode: interpolation mode, 'C' sets the values equal to 'cval',
+                'W' warps and 'M' mirrors
         cval: the value for the constant value interpolation mode
 
     Returns:
@@ -73,8 +75,7 @@ def interp_bilinear(img_channel: np.ndarray,
             r = tf_coords_r[tfr, tfc]
             c = tf_coords_c[tfr, tfc]
 
-            if ((mode == 'C') and ((r < 0) or (r >= rows) or
-                                   (c < 0) or (c >= columns))):
+            if (mode == "C") and ((r < 0) or (r >= rows) or (c < 0) or (c >= columns)):
                 output[tfr, tfc] = cval
             else:
                 r = _coord_map(rows, r, mode)
@@ -88,10 +89,17 @@ def interp_bilinear(img_channel: np.ndarray,
 
                 y0 = img_channel[r_int, c_int]
                 y1 = img_channel[_coord_map(rows, r_int + 1, mode), c_int]
-                y2 = img_channel[_coord_map(rows, r_int + 1, mode), _coord_map(columns, c_int + 1, mode)]
+                y2 = img_channel[
+                    _coord_map(rows, r_int + 1, mode),
+                    _coord_map(columns, c_int + 1, mode),
+                ]
                 y3 = img_channel[r_int, _coord_map(columns, c_int + 1, mode)]
 
-                output[tfr, tfc] = \
-                    (1 - t) * (1 - u) * y0 + t * (1 - u) * y1 + t * u * y2 + (1 - t) * u * y3
+                output[tfr, tfc] = (
+                    (1 - t) * (1 - u) * y0
+                    + t * (1 - u) * y1
+                    + t * u * y2
+                    + (1 - t) * u * y3
+                )
 
     return output
